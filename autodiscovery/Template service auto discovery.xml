@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-03-23T09:36:10Z</date>
+    <date>2018-04-12T04:04:57Z</date>
     <groups>
         <group>
             <name>Linux servers</name>
@@ -64,7 +64,7 @@
                             <type>0</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>system.run[/usr/bin/pgrep  {#SERVICE} &gt; /dev/null 2&gt;&amp;1 &amp;&amp; printf 0 || printf 1]</key>
+                            <key>system.run[/bin/ps aux | awk '!/root/&amp;&amp;/{#SERVICE}/{n++};END {printf n+0}']</key>
                             <delay>30s</delay>
                             <history>7d</history>
                             <trends>365d</trends>
@@ -100,8 +100,8 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template service auto discovery:system.run[/usr/bin/pgrep  {#SERVICE} &gt; /dev/null 2&gt;&amp;1 &amp;&amp; printf 0 || printf 1].last()}=0</expression>
-                            <recovery_mode>2</recovery_mode>
+                            <expression>{Template service auto discovery:system.run[/bin/ps aux | awk '!/root/&amp;&amp;/{#SERVICE}/{n++};END {printf n+0}'].last()}&gt;0</expression>
+                            <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>trigger_detected_and_run_{#SERVICE}</name>
                             <correlation_mode>0</correlation_mode>
@@ -111,7 +111,7 @@
                             <priority>1</priority>
                             <description/>
                             <type>0</type>
-                            <manual_close>1</manual_close>
+                            <manual_close>0</manual_close>
                             <dependencies/>
                             <tags/>
                         </trigger_prototype>
